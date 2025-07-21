@@ -2,8 +2,12 @@ from flask import Flask
 from db import db
 from models import User, Book
 from routes.auth import auth_bp
+import os
+from dotenv import load_dotenv
 
 app = Flask(__name__)
+load_dotenv()
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mybooks.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
