@@ -3,6 +3,7 @@ from db import db
 from models import User, Book
 from routes.auth import auth_bp
 from routes.auth import test_bp 
+from routes.books import book_bp
 import os
 from dotenv import load_dotenv
 
@@ -16,6 +17,7 @@ db.init_app(app)
 
 app.register_blueprint(auth_bp)
 app.register_blueprint(test_bp)
+app.register_blueprint(book_bp)
 
 
 @app.route('/')
@@ -32,7 +34,7 @@ with app.app_context():
         test_user = User(
             username="testuser",
             email="test@example.com",
-            password_hash="hashedpassword123"
+            password="hashedpassword123"
         )
         db.session.add(test_user)
         db.session.commit()

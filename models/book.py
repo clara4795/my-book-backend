@@ -10,3 +10,5 @@ class Book(db.Model):
     rating = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    start_date = db.Column(db.Date) 
+    end_date = db.Column(db.Date) 
