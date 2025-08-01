@@ -3,8 +3,9 @@ from werkzeug.security import check_password_hash
 from models.user import User
 from db import db
 from utils.jwt_helper import generate_token
+from utils.auth import login_required
 
-auth_bp = Blueprint('auth', __name__)
+auth_bp = Blueprint('auth_bp', __name__)
 
 @auth_bp.route('/register', methods=['POST'])
 def register():
@@ -41,3 +42,33 @@ def login():
 
     token = generate_token(user.id)
     return jsonify({'token': token}), 200
+
+@auth_bp.route('/me', methods=['GET'])
+@login_required
+def get_current_user():
+    user_id = request.user_id
+    user = User.query.get(user_id)
+
+    if not user:
+        return jsonify({'error': '사용자를 찾을 수 없습니다'}), 404
+
+    return jsonify({
+        'id': user.id,
+        'username': user.username,
+        'email': user.email
+    })
+
+@auth_bp.route('/logout', methods=['POST'])
+@login_required
+def logout():
+    # JWT 서버에서 토큰 직접 삭제 못함 - 프론트에서 삭제
+    return jsonify({'message': '로그아웃되었습니다. 토큰을 삭제해주세요'}), 200
+
+
+#테스트용
+test_bp = Blueprint('test_bp', __name__)
+
+@test_bp.route('/protected')
+@login_required
+def protected_route():
+    return jsonify({'message': 'This is a protected route!', 'user_id': request.user_id})

@@ -2,6 +2,7 @@ from flask import Flask
 from db import db
 from models import User, Book
 from routes.auth import auth_bp
+from routes.auth import test_bp 
 import os
 from dotenv import load_dotenv
 
@@ -14,6 +15,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 app.register_blueprint(auth_bp)
+app.register_blueprint(test_bp)
+
 
 @app.route('/')
 def home():
