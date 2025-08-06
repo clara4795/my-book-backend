@@ -6,8 +6,11 @@ from routes.auth import test_bp
 from routes.books import book_bp
 import os
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
+
 load_dotenv()
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mybooks.db'
